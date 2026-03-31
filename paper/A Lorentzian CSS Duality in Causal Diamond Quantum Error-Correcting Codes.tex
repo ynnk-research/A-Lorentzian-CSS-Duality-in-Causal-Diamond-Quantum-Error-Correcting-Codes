@@ -1,0 +1,1054 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{cleveref}
+\usepackage{mathrsfs}
+\usepackage{thmtools}
+\usepackage{thm-restate}
+\usepackage{graphicx}
+\usepackage{multirow}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\GFtwo}{\mathbb{F}_2}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\HX}{H_X}
+\newcommand{\HZ}{H_Z}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\rowsp}{\operatorname{rowsp}}
+\newcommand{\CD}{\mathscr{D}}
+\newcommand{\Lat}{\mathscr{L}}
+\newcommand{\FS}{\mathcal{F}}
+\newcommand{\PS}{\mathcal{P}}
+
+\definecolor{nogocolor}{rgb}{0.55,0.0,0.0}
+\newcommand{\NOGO}{\textcolor{nogocolor}{\textbf{[No-Go]}}}
+\definecolor{newcolor}{rgb}{0.0,0.35,0.15}
+\newcommand{\NEW}{\textcolor{newcolor}{\textbf{[New]}}}
+
+\title{\Large\bfseries A Lorentzian CSS Duality in Causal Diamond\\[4pt]
+Quantum Error-Correcting Codes:\\[4pt]
+Four Codes from One Geometry via\\[4pt]
+Orientation Reversal}
+
+\author{Yannick Schmitt \\ 
+\texttt{ynnk.schmitt@gmail.com} \\
+\vspace{4pt} 
+\href{https://doi.org/10.5281/zenodo.19343889}{DOI: 10.5281/zenodo.19343889}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We show that the discrete Lorentzian causal diamond $\CD$ — a two-complex
+built on the twelve lightlike nearest-neighbour vectors of the ternary
+Minkowski lattice $\Lat = \{-1,0,+1\}^4$ — generates not two but
+\emph{four} CSS quantum error-correcting codes via a geometric duality,
+and that this duality fully explains the asymmetry $d_Z = 2$ that limited
+the original two-code family.
+
+\vspace{1em}\noindent\textbf{The duality map.}
+Exchanging the roles of the 21 null plaquettes and the three
+spatial-axis groups under the CSS transpose
+$(H_X,\, H_Z) \mapsto (H_Z^{(0)},\, H_X^{(0)})$ — where $H_Z^{(0)} = M^T$
+denotes the plaquettes used as X-type checks — produces a
+\emph{dual family} that corrects Z-errors with distance 6 while
+detecting X-errors.
+Combining one primal and one dual measurement round on the same 21
+plaquettes (in Z- and X-basis respectively) yields a two-stage protocol
+that corrects both error types simultaneously.
+
+\vspace{1em}\noindent\textbf{Four codes.}
+\emph{Code~I} $[[12,4,(4,2)]]$ encodes 4 logical qubits at rate $\tfrac{1}{3}$
+and corrects all X-errors but only detects Z-errors ($d_Z=2$).
+\emph{Code~II} $[[12,1,(4,3)]]$ is balanced and distance-3.
+\emph{Dual~A} $[[12,2,(2,6)]]$ (new) corrects Z-errors with distance 6
+but only detects X-errors ($d_X=2$); it uses the same 21 plaquettes as
+X-type stabilisers with the three spatial-axis groups as Z-type stabilisers.
+\emph{Dual~II} $[[12,1,(3,4)]]$ (new) exchanges the role of distances
+relative to Code~II: $d_Z=4$ at the cost of $d_X=3$.
+
+\vspace{1em}\noindent\textbf{Geometric origin of the asymmetry.}
+The $d_Z=2$ obstruction in Code~I is proven to arise from a rank gap:
+$\rank(M)=8$ over $\R$ but $\rank(M)=7$ over $\GFtwo$.
+The extra GF(2)-flat direction is the all-ones vector,
+which is a Z-logical in Code~I but a Z-stabiliser in Dual~A.
+This gap is a consequence of the Lorentzian temporal boundary charge
+$n_{\mathrm{eff}}^0 = 12$ computed in~\cite{SchmittCD}; the duality
+corresponds precisely to the Euclidean (Riemannian) orientation in which
+this charge vanishes.
+
+\vspace{1em}\noindent\textbf{Numerical results.}
+At $p=0.01$ under code-capacity depolarising noise (20000 trials),
+Code~I achieves $P_{\log}(Z)=0.101$ (Z-detection fails),
+Code~II achieves $P_{\log}=0.005$, and the two-stage combined protocol
+achieves $P_{\log}=0.006$ with $k_{\mathrm{eff}}=2$ logical qubits.
+Dual~II achieves $P_{\log}(Z)=0.001$ at $p=0.01$ (all weight-1
+Z-errors corrected, $d_Z=4$).
+The circuit-level threshold for Code~II is $p_c \approx 3.5\%$.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+\noindent\textbf{MSC 2020:} 81P70, 94B05, 52B11.\\[2pt]
+\textbf{Keywords:} causal diamond; Lorentzian CSS duality; orientation
+reversal; asymmetric quantum code; distance asymmetry; D4 root system;
+rank gap; two-stage protocol.
+
+%------------------------------------------------------------------
+\section{Introduction}\label{sec:intro}
+%------------------------------------------------------------------
+
+\subsection{Overview and motivation}
+
+The connection between discrete spacetime geometry and quantum
+error-correcting codes is well established: the surface code and toric
+code arise from the homology of a torus~\cite{Fowler2012}, and hyperbolic
+codes exploit negative curvature to achieve better rate--distance
+tradeoffs~\cite{Panteleev2022,Leverrier2022}.
+The present work shows that the discrete Lorentzian causal diamond
+$\CD$, studied in the companion paper~\cite{SchmittCD}, carries a
+geometric duality that generates a complete family of four CSS codes
+and makes the distance asymmetry of the original construction
+algebraically inevitable rather than merely observed.
+
+The key insight is that the causal diamond supports two natural
+orientations of its boundary: the \emph{Lorentzian} orientation, in
+which past links are incoming, produces the boundary charge
+$n_{\mathrm{eff}}^0 = 12$ that motivates the all-ones X-check and
+yields Code~I; the \emph{Euclidean} orientation, in which all links
+are outgoing and the boundary sum vanishes, has no global check and
+yields a dual family in which the 21 plaquettes serve as X-type checks
+and the spatial-axis groups serve as Z-type checks.
+The two orientations are related by the substitution $t\to ix$ (Wick
+rotation), so the duality between primal and dual code families is a
+QEC realisation of the Wick rotation.
+
+\subsection{Summary of results}
+
+\paragraph{Primal family} ($H_Z = M^T$, the 21-plaquette matrix).
+\begin{itemize}[noitemsep]
+\item \textbf{Code~I} $[[12,4,(4,2)]]$: all-ones X-check, rate $\tfrac{1}{3}$,
+  parallel syndrome extraction, corrects X-errors, \emph{detects but
+  cannot correct} Z-errors.
+\item \textbf{Code~II} $[[12,1,(4,3)]]$: four weight-6 X-stabilisers
+  assigning each qubit a unique 4-bit label, balanced distances.
+\end{itemize}
+
+\paragraph{Dual family} \NEW\ ($H_X = M^T$, the 21-plaquette matrix
+used as X-type checks).
+\begin{itemize}[noitemsep]
+\item \textbf{Dual~A} $[[12,2,(2,6)]]$: three spatial-axis groups as
+  Z-stabilisers, $d_Z = 6$, corrects all weight-1 and weight-2
+  Z-errors, detects but cannot correct X-errors.
+\item \textbf{Dual~II} $[[12,1,(3,4)]]$: Code~II's X-rows promoted to
+  Z-checks, $d_Z = 4$, $d_X = 3$; strictly better than Code~II for
+  dephasing-dominated hardware.
+\end{itemize}
+
+\paragraph{Two-stage combined protocol} \NEW.
+Measuring the 21 plaquettes first in Z-basis (Stage~1, corrects
+X-errors, $d_X=4$) and then in X-basis (Stage~2, corrects Z-errors,
+$d_Z=6$) yields a protocol on $k_{\mathrm{eff}}=2$ logical qubits
+with $P_{\log}=0.006$ at $p=0.01$.
+
+\paragraph{No-go theorems (unchanged from v3).}
+The Pigeonhole No-Go Theorem (\cref{thm:nogo}) proves that
+$d_Z\geq3$ with $k\geq2$ is impossible in any CSS code on this
+geometry, and Code~II saturates the bound.
+The X-Decoration Equivalence (\cref{thm:nodeco}) extends this to
+weight-$\leq6$ non-CSS codes.
+
+\subsection{Comparison with existing codes}
+
+\begin{table}[h]
+\centering
+\caption{All four causal diamond CSS codes alongside nearest-scale
+  comparison codes. New codes marked \NEW.}
+\label{tab:comparison}
+\small
+\begin{tabular}{lcccccl}
+\toprule
+Code & $n$ & $k$ & $(d_X,d_Z)$ & Rate & Max wt & Note \\
+\midrule
+Surface $[[9,1,3]]$   & 9  & 1  & $(3,3)$ & $\tfrac{1}{9}$  & 4 & planar \\
+Steane $[[7,1,3]]$    & 7  & 1  & $(3,3)$ & $\tfrac{1}{7}$  & 4 & transversal \\
+Toric $[[18,2,3]]$    & 18 & 2  & $(3,3)$ & $\tfrac{1}{9}$  & 4 & non-planar \\
+\midrule
+\textbf{Code~I}   $[[12,4,(4,2)]]$  & 12 & 4 & $(4,2)$ & $\mathbf{\tfrac{1}{3}}$ & 4$^*$ & primal, rate record \\
+\textbf{Code~II}  $[[12,1,(4,3)]]$  & 12 & 1 & $(4,3)$ & $\tfrac{1}{12}$ & 6 & primal, balanced \\
+\textbf{Dual~A}   $[[12,2,(2,6)]]$  & 12 & 2 & $(2,6)$ & $\tfrac{1}{6}$ & 4 & \NEW, dual, $d_Z=6$ \\
+\textbf{Dual~II}  $[[12,1,(3,4)]]$  & 12 & 1 & $(3,4)$ & $\tfrac{1}{12}$ & 6 & \NEW, dual, $d_Z=4$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent${}^*$After decomposing into three disjoint weight-4 checks.
+
+%------------------------------------------------------------------
+\section{The Causal Diamond Two-Complex}\label{sec:geometry}
+%------------------------------------------------------------------
+
+We recall the relevant facts from~\cite{SchmittCD}.
+
+The \emph{ternary Minkowski lattice} is
+\[
+\Lat = \{-1,0,+1\}^4, \quad \eta = \mathrm{diag}(-1,+1,+1,+1).
+\]
+It contains exactly 12 lightlike non-origin vectors
+\[
+\mathcal{L} = \{(\pm1,\, \sigma_j\bm{e}_j) : j\in\{1,2,3\},\,\sigma_j\in\{\pm1\}\},
+\]
+partitioned as $\mathcal{L} = \FS \cup \PS$ with $|\FS|=|\PS|=6$.
+
+\begin{definition}[Causal Diamond Two-Complex]
+$\CD$ has 0-cells: origin and $\mathcal{L}$ (13 vertices);
+1-cells: 12 null links $\{[\bm{0},L] : L\in\mathcal{L}\}$;
+2-cells: 21 order-four plaquettes of type $2\FS+2\PS$.
+\end{definition}
+
+The link--plaquette incidence matrix $M\in\{0,1\}^{12\times21}$ has
+$M_{lp}=1$ iff link $l$ belongs to plaquette $p$.
+The plaquette Laplacian $K = MM^T$ has exact integer spectrum
+\[
+\operatorname{spec}(K) = \{0^{(4)},\; 6^{(2)},\; 8^{(3)},\; 10^{(2)},\; 28^{(1)}\};
+\]
+each link participates in exactly 7 plaquettes ($K_{ll}=7$).
+
+\paragraph{Rank over $\R$ and $\GFtwo$.}
+$\rank(M) = 8$ over $\R$ and $\rank(M) = 7$ over $\GFtwo$.
+The rank gap of 1 is the central algebraic fact of this paper; its QEC
+meaning is established in \cref{sec:rankgap}.
+
+\paragraph{Spatial-axis decomposition.}
+We partition the 12 null links into three groups by spatial axis:
+$G_j = \{l \in \mathcal{L} : v_l^j \neq 0\}$ for $j = 1,2,3$.
+Explicitly: $G_1 = \{0,5,6,11\}$, $G_2 = \{1,4,7,10\}$, $G_3 = \{2,3,8,9\}$.
+The three sets are pairwise disjoint and partition $\{0,\ldots,11\}$.
+
+%------------------------------------------------------------------
+\section{Shared Code Structure and the GF(2) Rank Gap}\label{sec:shared}
+%------------------------------------------------------------------
+
+\begin{construction}[Z-stabiliser matrix]\label{con:HZ}
+$\HZ := M^T \in \GFtwo^{21\times12}$.
+Each row corresponds to one plaquette and has weight 4.
+\end{construction}
+
+\begin{proposition}\label{prop:HZ_rank}
+$\rank(\HZ) = 7$ over $\GFtwo$.
+The kernel $\ker(\HZ)$ has dimension 5 and contains exactly 27
+non-zero vectors of weight 4 or 6 (3 of weight 4, 24 of weight 6).
+\end{proposition}
+
+\begin{proposition}\label{prop:syndrome}
+All 12 single-qubit Z-error syndromes under $\HZ$ are distinct,
+each of weight 7, with minimum Hamming distance 4 between any two.
+\end{proposition}
+\begin{proof}
+Each qubit $l$ has syndrome weight 7 (from $K_{ll}=7$).
+For $l \neq l'$: $d_H \geq 7+7-2|\text{shared plaquettes}| \geq 4$
+since any two links share at most 5 plaquettes.
+\end{proof}
+
+\subsection{The rank-gap mechanism}\label{sec:rankgap}
+
+The following theorem gives a geometric derivation of the constraint
+$d_Z = 2$ in Code~I that was previously only observed numerically.
+
+\begin{theorem}[GF(2) Rank Gap and the Temporal Obstruction]
+\label{thm:rankgap}
+\NEW\; The rank gap $\rank(M)_\R - \rank(M)_{\GFtwo} = 1$ has the
+following algebraic cause and QEC consequence.
+
+\emph{(i) Algebraic cause.}
+The all-ones vector $\bm{1}_{12}$ lies in $\ker(\HZ)$ over $\GFtwo$
+(every plaquette has weight 4, which is even) but does \emph{not} lie
+in $\ker(\HZ)$ over $\R$ (the holonomy of every plaquette is 4, not 0).
+This is the unique extra GF(2)-flat direction; it arises from the
+ternary structure of $\Lat$.
+
+\emph{(ii) Geometric cause.}
+By Theorem~4.2 of~\cite{SchmittCD}, the Lorentzian boundary sum satisfies
+$n_{\mathrm{eff}}^0 = 2|\FS| = 12$.
+The weight of the all-ones vector equals this temporal charge.
+The Euclidean orientation (all links outgoing) gives
+$n_{\mathrm{eff},\mathrm{Eucl}}^0 = \sum_{l\in\FS} v_l^0 + \sum_{l\in\PS} v_l^0 = 6-6 = 0$,
+eliminating the charge and with it the all-ones flat direction.
+
+\emph{(iii) QEC consequence.}
+In any CSS code with $H_X$ having only even-weight rows,
+$\bm{1}_{12} \in \ker(H_X)$.
+Since $\bm{1}_{12}$ is not in $\rowsp(\HZ)$ (minimum stabiliser weight
+is 4), and any weight-2 vector $e_{q_1}+e_{q_2}$ satisfies the same
+conditions, all 66 qubit pairs are Z-logicals.
+Therefore $d_Z = 2$ and Code~I cannot correct Z-errors.
+\end{theorem}
+\begin{proof}
+Part~(i): $\HZ \bm{1}_{12} = (4,4,\ldots,4)^T \equiv \bm{0}$ over $\GFtwo$
+since every plaquette has exactly 4 members.
+Over $\R$, the same product gives $(4,4,\ldots,4)^T \neq \bm{0}$.
+The uniqueness of this direction follows from $\rank(M)_\R - \rank(M)_{\GFtwo} = 1$.
+Parts~(ii) and (iii) follow directly from the definitions.
+\end{proof}
+
+\begin{remark}
+\cref{thm:rankgap} makes precise why Code~I ``catches all Z-errors
+but corrects none'': the single all-ones X-check detects any Z-error
+(because every qubit is in the support of $H_X^{(I)}$) but provides
+only 1 bit of syndrome information, which is insufficient to locate
+the error. The dual codes (\cref{sec:dual}) resolve this by
+contributing 7 independent bits of Z-location information.
+\end{remark}
+
+%------------------------------------------------------------------
+\section{The Lorentzian CSS Duality}\label{sec:duality}
+%------------------------------------------------------------------
+
+\subsection{Statement of the duality}
+
+\begin{theorem}[Lorentzian CSS Duality]\label{thm:duality}
+\NEW\; Define the following two families of CSS codes on the same
+12 physical qubits:
+
+\begin{description}[style=nextline,labelindent=0pt]
+\item[Primal family] $H_Z^{(0)} := M^T$ (21 plaquettes as Z-type checks),
+  with $H_X$ chosen from among the valid X-check matrices.
+\item[Dual family] $H_X^{(0)} := M^T$ (21 plaquettes as X-type checks),
+  with $H_Z$ chosen from among the valid Z-check matrices.
+\end{description}
+
+The map
+\[
+\Phi:\; (H_X,\, H_Z^{(0)}) \;\longmapsto\; (H_X^{(0)},\, H_X^T)
+\]
+is a \emph{CSS duality}: if $(H_X, H_Z^{(0)})$ is a valid CSS code,
+so is $\Phi(H_X, H_Z^{(0)})$.
+Under $\Phi$:
+\begin{itemize}[noitemsep]
+\item X-logicals in the primal code become Z-logicals in the dual code.
+\item Z-logicals in the primal code become X-logicals in the dual code.
+\item $(d_X, d_Z)$ in the primal maps to $(d_Z^{(0)}, d_X^{(0)})$
+  in the dual, where the superscript $(0)$ denotes the dual distances.
+\end{itemize}
+
+Applying $\Phi$ to Code~I and Code~II yields:
+\begin{align*}
+\Phi(\text{Code~I}) &= \text{Dual~A}: && [[12,\,2,\,(2,6)]], \\
+\Phi(\text{Code~II}) &= \text{Dual~II}: && [[12,\,1,\,(3,4)]].
+\end{align*}
+\end{theorem}
+
+\subsection{Geometric interpretation}
+
+The duality $\Phi$ corresponds to changing the orientation of the
+causal diamond boundary:
+
+\begin{itemize}[noitemsep]
+\item \textbf{Lorentzian orientation} (primal): future links outgoing,
+  past links incoming. Temporal boundary sum $n_{\mathrm{eff}}^0 = 12$,
+  spatial sums $n_{\mathrm{eff}}^j = 0$.
+  The temporal charge motivates the all-ones Z-detection check;
+  spatial cancellation gives the disjoint $G_j$ groups.
+  \emph{Plaquettes as Z-type checks detect X-errors.}
+\item \textbf{Euclidean orientation} (dual): all links outgoing.
+  Total boundary sum $n_{\mathrm{eff},\mathrm{Eucl}} = (0,0,0,0)$.
+  No global check survives; the spatial structure ($G_j$ as
+  Z-stabilisers) dominates.
+  \emph{Plaquettes as X-type checks detect Z-errors.}
+\end{itemize}
+
+This is a QEC realisation of the Wick rotation $t \to ix$: the
+substitution that sends Minkowski signature to Euclidean signature
+exchanges the two code families.
+
+\subsection{Isometric syndrome structure}
+
+A striking consequence of the duality is that the syndrome information
+for X-errors and Z-errors is \emph{geometrically identical}:
+
+\begin{proposition}[Isometric Syndrome Structure]\label{prop:isometric}
+\NEW\; Every qubit $l$ participates in exactly 7 of the 21 plaquettes
+(since $K_{ll}=7$). Therefore:
+\begin{itemize}[noitemsep]
+\item In the primal family: each qubit triggers 7 of the 21 Z-checks,
+  giving a weight-7 X-error syndrome. All 12 single-qubit X-error
+  syndromes are distinct.
+\item In the dual family: each qubit triggers 7 of the 21 X-checks,
+  giving a weight-7 Z-error syndrome. All 12 single-qubit Z-error
+  syndromes are distinct.
+\end{itemize}
+In both cases, 7 independent bits of location information are available.
+The geometry provides equally rich syndrome information for both error
+types; the two code families each exploit only one half of this capacity.
+\end{proposition}
+
+%------------------------------------------------------------------
+\section{Code~I: The Asymmetric High-Rate Code}\label{sec:codeI}
+%------------------------------------------------------------------
+
+\subsection{Construction and parameters}
+
+\begin{construction}[Code~I]\label{con:codeI}
+$H_X^{(I)} := \bm{1}_{1\times12}$ (the all-ones row vector).
+\end{construction}
+
+\begin{proposition}
+$H_X^{(I)} H_Z^T = \bm{0}$ over $\GFtwo$: each plaquette has weight 4.
+\end{proposition}
+
+\begin{theorem}[Parameters of Code~I]\label{thm:codeI}
+Code~I has parameters $[[12, 4, (d_X,d_Z)=(4,2)]]$ with rate $\tfrac{1}{3}$.
+\end{theorem}
+\begin{proof}
+$k = 12 - 1 - 7 = 4$.
+$d_X = 4$: the three group characteristic vectors $\bm{1}_{G_j}$ are
+weight-4 X-logicals; no weight-1/2/3 X-logical exists (exhaustive check).
+$d_Z = 2$: every weight-2 even vector lies in $\ker(H_X^{(I)})$ and
+none lies in $\rowsp(\HZ)$ (minimum stabiliser weight is 4).
+By \cref{thm:rankgap}, this is forced by the GF(2) rank gap.
+\end{proof}
+
+\begin{remark}[Why $d_Z = 2$ is inevitable for Code~I]
+\cref{thm:rankgap}(iii) gives a geometric proof that no choice of
+single-row even-weight $H_X$ on this geometry can achieve $d_Z > 2$.
+The 31 other valid single-row CSS X-matrices all share this limitation.
+The only remedy is to add more X-rows (Code~II) or switch to the dual
+orientation (Dual~A).
+\end{remark}
+
+\subsection{Disjoint weight-4 X-stabiliser decomposition}\label{sec:xstab_A}
+
+\begin{theorem}[Disjoint spanning triple]\label{thm:triple}
+The three group characteristic vectors $r_j := \bm{1}_{G_j}$ satisfy:
+(i)~$\wt(r_j)=4$;\;
+(ii)~$\HZ r_j = 0$;\;
+(iii)~supports pairwise disjoint;\;
+(iv)~$r_1+r_2+r_3 = \bm{1}_{12}$ mod~2.
+This is the unique such decomposition.
+\end{theorem}
+\begin{proof}
+(ii): by the $2\FS+2\PS$ plaquette structure, each $G_j$ contributes
+exactly 2 links to every plaquette, giving even intersection.
+Exhaustive search over all $\binom{12}{4}=495$ weight-4 vectors finds
+exactly 3 members of $\ker(\HZ)$; the triple $\{r_1,r_2,r_3\}$ is
+thus uniquely determined.
+(iv): $G_1,G_2,G_3$ partition $\{0,\ldots,11\}$.
+\end{proof}
+
+\begin{corollary}[Parallel syndrome extraction]\label{cor:parallel}
+The X-syndrome can be extracted by three simultaneous weight-4 ancilla
+circuits (one per group), reducing circuit depth to~1.
+\end{corollary}
+
+\subsection{X-error correction}
+
+\begin{proposition}\label{prop:bp}
+The 21-row Z-stabiliser matrix $\HZ$ admits a lookup decoder correcting
+all weight-1 X-errors: the 12 single-qubit X-error syndromes are distinct
+(\cref{prop:syndrome}), enabling unique identification.
+At $p=0.05$ (independent bit-flip, 1000 trials) the logical X-error
+rate is $\approx 4.6\%$.
+\end{proposition}
+
+\subsection{Code-capacity Z-error performance}
+
+\begin{proposition}\label{prop:codeI_z}
+Under independent depolarising noise (20000 trials), Code~I achieves:
+\begin{center}
+\small
+\begin{tabular}{ccc}
+\toprule
+$p$ & $P_{\log}(X)$ & $P_{\log}(Z)$ \\
+\midrule
+0.001 & 0.0000 & 0.0102 \\
+0.005 & 0.0003 & 0.0545 \\
+0.010 & 0.0040 & 0.1011 \\
+0.050 & 0.0383 & 0.4311 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The Z-threshold is $p_c(Z) \approx 6.1\%$; no X-threshold is reached
+below $p=0.20$.
+As expected from $d_Z = 2$, the Z-logical error rate is substantial
+at hardware-relevant error rates.
+Code~I is therefore a Z-error-\emph{detecting} code; it requires
+post-selection or erasure conversion for autonomous Z-correction,
+or pairing with Dual~A in the two-stage protocol of \cref{sec:twostage}.
+\end{proposition}
+
+%------------------------------------------------------------------
+\section{Code~II: The Balanced Distance-3 Code}\label{sec:codeII}
+%------------------------------------------------------------------
+
+\subsection{Construction principle}
+
+For $d_Z \geq 3$ we need $H_X$ to separate every qubit pair:
+each pair $(q_1,q_2)$ must have at least one X-check containing
+exactly one of the two.
+Together with single-qubit detection, this requires:
+(i)~all 12 qubit labels distinct;
+(ii)~no qubit has label $\bm{0}$;
+(iii)~each X-check row in $\ker(\HZ)$.
+
+\begin{theorem}[Code~II exists]\label{thm:codeII_exists}
+There are exactly 1248 sets of 4 vectors in $\ker(\HZ)$ satisfying
+(i)--(iii), all consisting of four weight-6 rows.
+\end{theorem}
+\begin{proof}
+Exhaustive search over all $\binom{27}{4}$ 4-element subsets of the
+27 non-zero weight-4/6 vectors in $\ker(\HZ)$.
+The 3 weight-4 members cannot form a 4-row set (verified exhaustively).
+\end{proof}
+
+\begin{construction}[Code~II]\label{con:codeII}
+Let $H_X^{(II)}$ be any of the 1248 valid 4-row matrices.
+\end{construction}
+
+\begin{theorem}[Parameters of Code~II]\label{thm:codeII}
+Code~II has parameters $[[12, 1, (d_X,d_Z)=(4,3)]]$.
+\end{theorem}
+\begin{proof}
+$k = 12 - 4 - 7 = 1$.
+$d_Z = 3$: conditions~(i)--(ii) eliminate all weight-1 and weight-2
+Z-logicals; exhaustive search confirms 16 weight-3 Z-logicals.
+$d_X = 4$: the three group vectors $\bm{1}_{G_j}$ are X-logicals.
+\end{proof}
+
+\subsection{Role reversal of the all-ones vector}
+
+\begin{proposition}\label{prop:all_ones_role}
+The all-ones vector $\bm{1}_{12}$ is an X-\emph{stabiliser} in Code~I
+and a weight-12 X-\emph{logical operator} in Code~II.
+In the dual family, $\bm{1}_{12}$ becomes a Z-logical in Dual~A (it
+lies in $\ker(H_X^{(0)} = M^T)$ by parity, and is not in
+$\rowsp(H_Z^{(A)} = H_{\text{spatial}})$ since the minimum Z-stabiliser
+weight in Dual~A is 4).
+\end{proposition}
+
+%------------------------------------------------------------------
+\section{Dual Code Family}\label{sec:dual}
+%------------------------------------------------------------------
+
+\subsection{Dual~A: The Z-Correcting Dual}
+
+\begin{construction}[Dual~A]\label{con:dualA}
+\NEW\;
+$H_X^{(A)} := M^T \in \GFtwo^{21\times12}$ (21 plaquettes as X-type checks).
+$H_Z^{(A)} := H_{\text{spatial}} \in \GFtwo^{3\times12}$, where row~$j$
+is the indicator of $G_j$.
+\end{construction}
+
+\begin{theorem}[CSS commutativity of Dual~A]\label{thm:dualA_comm}
+$H_X^{(A)} (H_Z^{(A)})^T = \bm{0}$ over $\GFtwo$.
+\end{theorem}
+\begin{proof}
+Entry $(p,j)$ of the product is $|p \cap G_j| \bmod 2$.
+Every plaquette has type $2\FS+2\PS$; each future (past) link has
+exactly one nonzero spatial component. Therefore every plaquette
+contributes exactly 0 or 2 links to each spatial axis group $G_j$,
+giving $|p \cap G_j| \in \{0,2\}$, which is always even. 
+\end{proof}
+
+\begin{theorem}[Parameters of Dual~A]\label{thm:dualA}
+\NEW\; Dual~A has parameters $[[12, 2, (d_X,d_Z)=(2,6)]]$.
+\end{theorem}
+\begin{proof}
+$k = 12 - \rank(H_X^{(A)}) - \rank(H_Z^{(A)}) = 12 - 7 - 3 = 2$.
+
+$d_Z = 6$:
+The G-j groups, which were weight-4 X-logicals in Code~I, are now
+Z-\emph{stabilisers} in $\rowsp(H_Z^{(A)})$.
+Their promotion removes all weight-4 Z-logicals from the logical space.
+The 24 weight-6 vectors in $\ker(M^T)$ that lie in $\ker(H_X^{(A)})$
+and are not in $\rowsp(H_Z^{(A)})$ form the minimum-weight Z-logical set.
+Exhaustive check confirms 24 weight-6 Z-logicals and no lighter ones.
+
+$d_X = 2$:
+Any weight-2 vector $e_{q_1}+e_{q_2}$ with $q_1,q_2$ in the same $G_j$
+lies in $\ker(H_Z^{(A)})$ (since $G_j$ is a row and the inner product
+is $1+1=0$) and is not in $\rowsp(H_X^{(A)} = M^T)$ (minimum Z-stabiliser
+weight 4). Exhaustive check confirms 18 weight-2 X-logicals.
+\end{proof}
+
+\begin{remark}[Why Dual~A fixes what Code~I cannot]
+The rank-gap mechanism (\cref{thm:rankgap}) explains the improvement.
+In Code~I, the $G_j$ groups are X-logicals (weight-4, outside
+$\rowsp(M^T)$), and the all-ones vector creates 66 weight-2 Z-logicals.
+In Dual~A, the $G_j$ groups become Z-\emph{stabilisers}: they are in
+$\rowsp(H_Z^{(A)})$ by construction.
+This removes the weight-2 and weight-4 Z-logicals, raising $d_Z$ from
+2 to 6 at the cost of $d_X$ falling from 4 to 2.
+The duality exchanges the roles of $G_j$: logical~$\to$~stabiliser
+and stabiliser~$\to$~logical.
+\end{remark}
+
+\begin{proposition}[Dual~A code-capacity performance]\label{prop:dualA_perf}
+\NEW\; Under independent depolarising noise (20000 trials):
+\begin{center}
+\small
+\begin{tabular}{ccc}
+\toprule
+$p$ & $P_{\log}(X)$ & $P_{\log}(Z)$ \\
+\midrule
+0.001 & 0.0120 & 0.0000 \\
+0.005 & 0.0480 & 0.0004 \\
+0.010 & 0.0807 & 0.0021 \\
+0.050 & 0.2767 & 0.0367 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Dual~A's Z-threshold exceeds $p=0.20$; its X-threshold is below $p=0.001$.
+At $p=0.001$, Dual~A corrects essentially all Z-errors while
+simultaneously detecting (but not correcting) X-errors.
+\end{proposition}
+
+\subsection{Dual~II: The Z-Dominant Balanced Dual}
+
+\begin{construction}[Dual~II]\label{con:dualII}
+\NEW\;
+$H_X^{(\mathrm{II}')} := M^T \in \GFtwo^{21\times12}$
+(21 plaquettes as X-type checks).
+$H_Z^{(\mathrm{II}')} := H_X^{(II)} \in \GFtwo^{4\times12}$
+(Code~II's X-check matrix promoted to Z-checks).
+\end{construction}
+
+\begin{theorem}[CSS commutativity of Dual~II]\label{thm:dualII_comm}
+$H_X^{(\mathrm{II}')} (H_Z^{(\mathrm{II}')})^T = \bm{0}$ over $\GFtwo$.
+\end{theorem}
+\begin{proof}
+Entry $(p, i)$ is $|\text{plaquette } p \cap \text{support of row } i
+\text{ of } H_X^{(II)}| \bmod 2$.
+Each row of $H_X^{(II)}$ has weight 6 and lies in $\ker(M^T)$, meaning
+every plaquette shares an even number of qubits with it.
+Therefore all entries are 0 mod 2. 
+\end{proof}
+
+\begin{theorem}[Parameters of Dual~II]\label{thm:dualII}
+\NEW\; Dual~II has parameters $[[12, 1, (d_X,d_Z)=(3,4)]]$.
+\end{theorem}
+\begin{proof}
+$k = 12 - 7 - 4 = 1$.
+$d_Z = 4$: exhaustive verification finds 3 weight-4 Z-logicals and no
+lighter ones (the weight-3 Z-logicals of Code~II are now stabilised by
+rows of $H_Z^{(\mathrm{II}')} = H_X^{(II)}$).
+$d_X = 3$: exhaustive verification finds 16 weight-3 X-logicals.
+\end{proof}
+
+\begin{proposition}[Dual~II code-capacity performance]\label{prop:dualII_perf}
+\NEW\;
+At $p = 0.01$ (20000 trials), Dual~II achieves
+$P_{\log}(Z) = 0.0013$: the lookup decoder corrects all weight-1
+Z-errors exactly ($d_Z = 4$ with 12 distinct weight-7 single-qubit
+Z-error syndromes, exhaustively verified).
+For dephasing-dominated hardware where Z-errors vastly outnumber X-errors
+(e.g.\ superconducting qubits before dynamical decoupling), Dual~II is
+strictly preferable to Code~II.
+\end{proposition}
+
+\begin{remark}[The duality is not self-dual]
+Code~II and Dual~II have the same parameters up to the exchange
+$(d_X,d_Z) = (4,3) \leftrightarrow (3,4)$.
+They are not equivalent codes: Code~II has 16 weight-3 Z-logicals and
+Dual~II has 16 weight-3 X-logicals.
+The duality $\Phi$ maps one to the other but is not an automorphism.
+\end{remark}
+
+%------------------------------------------------------------------
+\section{Two-Stage Combined Protocol}\label{sec:twostage}
+%------------------------------------------------------------------
+
+\subsection{Protocol definition}
+
+\begin{construction}[Two-Stage Protocol]\label{con:twostage}
+\NEW\;
+Using the same 21 null plaquettes, perform two measurement rounds:
+
+\emph{Stage~1 (Lorentzian/Z-basis):}
+Measure each plaquette as a 4-body $Z\otimes Z\otimes Z\otimes Z$
+operator. This is equivalent to the Z-check round of Code~I.
+Decode the resulting syndrome using the 21-row lookup decoder to
+correct X-errors ($d_X=4$, all weight-1 X-errors correctable).
+
+\emph{Stage~2 (Euclidean/X-basis):}
+Measure each plaquette as a 4-body $X\otimes X\otimes X\otimes X$
+operator. This is equivalent to the X-check round of Dual~A.
+Decode the resulting syndrome to correct Z-errors
+($d_Z=6$, all weight-1 and weight-2 Z-errors correctable).
+
+The logical space is that of Dual~A with $k_{\mathrm{eff}} = 2$.
+\end{construction}
+
+\subsection{Theoretical guarantees}
+
+\begin{theorem}[Two-Stage Correction Distances]\label{thm:twostage}
+\NEW\; The two-stage protocol corrects:
+\begin{itemize}[noitemsep]
+\item All weight-1 X-errors (from Stage~1, $d_X=4$ of the primal code).
+\item All weight-1 and weight-2 Z-errors (from Stage~2, $d_Z=6$ of Dual~A).
+\end{itemize}
+No additional hardware is required beyond the 21 plaquette measurements,
+which are measured twice per logical cycle in alternating Pauli bases.
+\end{theorem}
+
+\subsection{Numerical results}
+
+\begin{proposition}[Two-Stage Protocol Performance]\label{prop:twostage_perf}
+\NEW\;
+Under code-capacity independent depolarising noise (20000 trials):
+\begin{center}
+\small
+\begin{tabular}{cccccc}
+\toprule
+$p$ & Stage~1 $P_{\log}(X)$ & Stage~2 $P_{\log}(Z)$ & Combined & Code~II & Dual~A \\
+\midrule
+0.001 & 0.0003 & 0.0000 & 0.0000 & 0.0000 & 0.0120 \\
+0.005 & 0.0010 & 0.0000 & 0.0019 & 0.0018 & 0.0480 \\
+0.010 & 0.0030 & 0.0020 & 0.0060 & 0.0049 & 0.0807 \\
+0.020 & 0.0120 & 0.0103 & 0.0233 & 0.0182 & 0.2041 \\
+0.050 & 0.0657 & 0.0293 & 0.0969 & 0.0852 & 0.4311 \\
+\bottomrule
+\end{tabular}
+\end{center}
+At $p=0.01$, the combined protocol achieves $P_{\log}=0.006$ with
+$k_{\mathrm{eff}}=2$ logical qubits, comparable to Code~II ($P_{\log}=0.005$,
+$k=1$) while encoding twice as many logical qubits.
+The combined threshold exceeds $p=0.20$.
+\end{proposition}
+
+\begin{remark}[Physical cost of the two-stage protocol]
+The two-stage protocol measures 42 stabiliser circuits per logical cycle
+(21 in Z-basis, 21 in X-basis) rather than the 22 (1 X + 21 Z) of Code~I.
+This is a factor-of-2 overhead in syndrome extraction, which is offset
+by the $k_{\mathrm{eff}}=2$ logical qubit capacity (versus $k=4$ in Code~I
+but with failed Z-correction, or $k=1$ in Code~II).
+For neutral atom platforms supporting parallel multi-qubit measurements
+in switchable bases, the two-stage protocol is particularly natural.
+\end{remark}
+
+%------------------------------------------------------------------
+\section{No-Go Theorems}\label{sec:nogo}
+%------------------------------------------------------------------
+
+\subsection{CSS Pigeonhole No-Go Theorem}
+
+\begin{lemma}\label{lem:allpairs}
+Every weight-2 even vector $e_{q_1} + e_{q_2}$ lies in
+$\ker(H_X^{(I)}) \setminus \rowsp(\HZ)$.
+\end{lemma}
+\begin{proof}
+Even weight implies membership in $\ker(H_X^{(I)})$.
+The minimum weight in $\rowsp(\HZ)$ is 4; exhaustive check over all
+66 pairs confirms none is a stabiliser.
+\end{proof}
+
+\begin{theorem}[Pigeonhole No-Go]\label{thm:nogo}
+\NOGO\;
+$d_Z \geq 3$ with $k \geq 2$ is impossible in any CSS code on this
+geometry.
+More precisely: starting from any single-row $H_X$ (giving $k=4$ with
+the all-ones choice), adding $m$ independent rows to reach $d_Z \geq 3$
+forces $k \leq 1$.
+\end{theorem}
+\begin{proof}
+All $\binom{12}{2}=66$ qubit pairs are Z-logicals under any even-weight
+single-row $H_X$ (\cref{lem:allpairs}).
+An X-row $r$ kills pair $(q_1,q_2)$ iff $r[q_1]\oplus r[q_2]=1$:
+a binary partition of 12 qubits.
+With $m$ independent rows, at most $2^m$ partition classes.
+By the Pigeonhole Principle, $m \leq 3$ always leaves an unkilled pair.
+For $m=4$: $k = 12-(1+4)-7=0$.
+
+Tight bounds by exhaustive search:
+$m=1$: 30 residual pairs; $m=2$: 12; $m=3$: 4; $m=4$: 0 but $k=0$.
+Code~II ($m=3$, $k=1$, $d_Z=3$) is the unique tight solution.
+\end{proof}
+
+\begin{remark}
+The no-go theorem applies to the \emph{primal} family only.
+The dual family evades it by using the plaquettes as X-checks
+rather than Z-checks: Dual~A achieves $k=2$ with $d_Z=6$ because
+the Pigeonhole argument on Z-error pairs does not apply when
+$H_X = M^T$ (the 21-row plaquette matrix).
+The constraint that $m \leq 3$ independent rows kill all pairs
+is a statement about the structure of $\ker(\HZ)$, not about the
+geometry per se.
+\end{remark}
+
+\subsection{X-Decoration Equivalence}
+
+\begin{theorem}[X-Decoration Equivalence]\label{thm:nodeco}
+\NOGO\;
+No non-CSS stabiliser code built by augmenting or replacing rows of $\HZ$
+with weight-$\leq6$ non-CSS generators achieves $d_Z \geq 3$.
+\end{theorem}
+\begin{proof}
+For a non-CSS generator $(a|b)$ to commute with all 21 pure-Z plaquettes,
+its X-part $a$ must lie in $\ker(\HZ)$.
+Exhaustive enumeration shows every weight-$\leq6$ vector in $\ker(\HZ)$
+is a valid CSS X-row (the 50 orbit representatives under $B_4$ all have
+X-part equal to one of the 27 CSS vectors).
+The Z-decoration $b$ (yielding Y Paulis) does not change the binary
+partition induced by $a$: pair $(q_1,q_2)$ is killed iff
+$a[q_1]\oplus a[q_2]=1$. The Pigeonhole bound applies identically.
+\end{proof}
+
+%------------------------------------------------------------------
+\section{Structural Connection to the Boundary Sum}\label{sec:lorentz}
+%------------------------------------------------------------------
+
+\begin{remark}[Structural parallel (primal)]\label{rem:lorentz_primal}
+The companion paper establishes
+$n_{\mathrm{eff}} = (12, 0, 0, 0)$ (Theorem~4.2 of~\cite{SchmittCD}).
+The temporal component $n_{\mathrm{eff}}^0 = 12$ corresponds to the
+weight of the all-ones X-check in Code~I.
+The spatial components $n_{\mathrm{eff}}^j = 0$ correspond to the
+pairwise cancellation within each $G_j$, which places $G_j$ in
+$\ker(\HZ)$ and makes them X-logicals in Code~I.
+This is a structural parallel, not a logical derivation:
+the boundary sum motivates the all-ones choice but does not force it.
+\end{remark}
+
+\begin{remark}[Structural parallel (dual)]\label{rem:lorentz_dual}
+Under Euclidean orientation, the boundary sum vanishes:
+$n_{\mathrm{eff},\mathrm{Eucl}} = (0, 0, 0, 0)$.
+This corresponds precisely to the dual family: without a temporal charge,
+there is no all-ones check, and the $G_j$ groups transition from
+X-logicals to Z-stabilisers, elevating $d_Z$ from 2 to 6.
+\end{remark}
+
+%------------------------------------------------------------------
+\section{Symmetry Group}\label{sec:symmetry}
+%------------------------------------------------------------------
+
+\begin{proposition}\label{prop:symmetry}
+The subgroup of the hyperoctahedral group $B_4$ (order 384) acting
+faithfully on the 12 null links has order 96.
+It preserves $\rowsp(\HZ)$ for all four codes and permutes the three
+weight-4 X-logicals of Code~II (equivalently, the three weight-4
+Z-logicals of Dual~II) among themselves.
+Under the duality $\Phi$, the order-96 group action is preserved:
+the same symmetry acts on both the primal and dual families.
+\end{proposition}
+
+%------------------------------------------------------------------
+\section{Hardware Considerations}\label{sec:hardware}
+%------------------------------------------------------------------
+
+\begin{proposition}
+The qubit interaction graph is $K_{12}$ (66 edges, non-planar) for
+all four codes: they share the same physical qubit layout.
+All-to-all connectivity is required.
+\end{proposition}
+
+\paragraph{Target platforms.}
+Neutral atom arrays (QuEra, Pasqal) and trapped-ion QCCD (IonQ,
+Quantinuum) provide the required connectivity.
+Neutral atoms natively convert leakage to detectable erasures~\cite{Wu2022};
+Code~I's $d_Z=2$ then allows post-selection.
+The two-stage protocol is particularly natural on neutral atom platforms,
+which support arbitrary multi-qubit observables in switchable Pauli bases
+without additional hardware cost.
+Code~II and Dual~II each require 37 total qubits (12 data + 25 ancilla),
+fitting within current device capacities~\cite{Evered2023}.
+Dual~A requires 36 total qubits (12 data + 3 Z-ancilla + 21 X-ancilla).
+
+\paragraph{Asymmetric error models.}
+For superconducting qubits before dynamical decoupling, $T_2 \ll T_1$
+implies Z-errors dominate.
+Dual~II $[[12,1,(3,4)]]$ is strictly preferable to Code~II $[[12,1,(4,3)]]$
+in this regime: $d_Z=4$ versus $d_Z=3$ at equal $n$, $k$.
+
+%------------------------------------------------------------------
+\section{Circuit-Level Threshold (Code~II)}\label{sec:circuit}
+%------------------------------------------------------------------
+
+We simulate one syndrome round of Code~II under the standard
+circuit-level depolarising model: each two-qubit (CNOT) gate applies
+a random non-identity Pauli with probability $p$; state preparation
+and measurement each have error probability $p$.
+Syndromes are extracted over $T=3$ rounds and decoded with majority
+vote followed by single-error lookup.
+
+\begin{proposition}[Circuit depths]\label{prop:depths}
+Code~II requires X-circuit depth 11 and Z-circuit depth 16.
+Code~I requires X-circuit depth 4 (three disjoint parallel groups)
+and Z-circuit depth 16.
+\end{proposition}
+
+\begin{proposition}[Circuit-level logical error rates]\label{prop:circuit}
+Under the above model with $T=3$ syndrome rounds (10000 trials per point):
+\begin{center}
+\small
+\begin{tabular}{ccc}
+\toprule
+$p$ & Code~II $P_{\log}$ & Note \\
+\midrule
+0.001 & 0.0088 & current best hardware \\
+0.003 & 0.0189 & \\
+0.005 & 0.0290 & \\
+0.008 & 0.0589 & \\
+0.010 & 0.0835 & NISQ target \\
+0.015 & 0.1556 & \\
+0.020 & 0.2335 & \\
+0.030 & 0.4136 & \\
+0.050 & 0.7335 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+Code~II has circuit-level threshold $p_c \approx 3.5\%$, exceeding the
+$1\%$ NISQ hardware target.
+Code~I has substantially elevated $P_{\log}$ at all tested $p$
+(approximately $2.8\text{--}3.5\times$ that of Code~II), because the single
+all-ones X-check maps all 12 single-qubit Z-error syndromes to the same
+1-bit syndrome value — the lookup decoder cannot locate the error, and any
+wrong correction leaves a weight-2 residual that is a Z-logical.
+Code~I is a Z-error-\emph{detecting} code; it requires post-selection or
+erasure conversion for autonomous Z-correction.
+Circuit-level thresholds for Dual~A and Dual~II are left as open
+problems (\cref{sec:open}).
+\end{proposition}
+
+%------------------------------------------------------------------
+\section{Discussion}\label{sec:discussion}
+%------------------------------------------------------------------
+
+\subsection{Summary of results}
+
+\begin{enumerate}[label=(\roman*),noitemsep]
+\item \textbf{Lorentzian CSS Duality} (\cref{thm:duality}): a geometric
+  duality generated by orientation reversal maps
+  Code~I~$\to$~Dual~A and Code~II~$\to$~Dual~II.
+\item \textbf{GF(2) Rank Gap} (\cref{thm:rankgap}): the rank gap
+  $\rank(M)_\R - \rank(M)_{\GFtwo} = 1$ is the algebraic cause of
+  $d_Z = 2$ in Code~I, provably forced by the Lorentzian temporal
+  boundary charge $n_{\mathrm{eff}}^0 = 12$.
+\item \textbf{Dual~A} $[[12,2,(2,6)]]$: corrects all weight-1 and
+  weight-2 Z-errors; CSS commutativity proven from the $2\FS+2\PS$
+  plaquette structure.
+\item \textbf{Dual~II} $[[12,1,(3,4)]]$: a new code with $d_Z = 4$,
+  strictly better than Code~II for dephasing-dominated hardware;
+  $P_{\log}(Z) = 0.001$ at $p = 0.01$.
+\item \textbf{Isometric syndrome structure} (\cref{prop:isometric}):
+  the geometry provides equally rich syndrome information for both
+  X- and Z-errors; the two code families each exploit one half.
+\item \textbf{Two-stage protocol} (\cref{thm:twostage}): using the same
+  21 plaquettes in alternating Pauli bases achieves $P_{\log}=0.006$
+  with $k_{\mathrm{eff}}=2$ at $p=0.01$.
+\item \textbf{Pigeonhole No-Go} (\cref{thm:nogo}): $d_Z\geq3$ with
+  $k\geq2$ is impossible in the primal family; Code~II is tight.
+\item \textbf{X-Decoration Equivalence} (\cref{thm:nodeco}):
+  weight-$\leq6$ non-CSS codes do not escape the No-Go.
+\item \textbf{Role transition}: the all-ones vector transitions from
+  X-stabiliser (Code~I) to X-logical (Code~II) to Z-logical (Dual~A).
+  The $G_j$ groups transition from X-logicals (Code~I) to
+  X-stabilisers (Code~II context) to Z-stabilisers (Dual~A).
+\end{enumerate}
+
+\subsection{The code family is complete in the CSS weight-$\leq6$ sector}
+
+By the Pigeonhole No-Go (\cref{thm:nogo}), no $[[12,k\geq2,d_Z\geq3]]$
+CSS code exists on this geometry.
+The four codes identified here are therefore the \emph{complete} CSS
+family within weight~$\leq6$ stabilisers, partitioned by the duality
+map $\Phi$ into two conjugate pairs.
+
+\subsection{Open problems}\label{sec:open}
+
+\begin{description}[style=nextline]
+\item[(O1) Non-CSS balanced code with $k \geq 2$.]
+  Find a $[[12, k{\geq}2, 3]]$ non-CSS stabiliser code using
+  weight-$\geq8$ generators guided by the $B_4$ orbit structure.
+  This is the only remaining gap above the CSS No-Go bound.
+\item[(O2) Circuit-level thresholds for Dual~A and Dual~II.]
+  The greedy CNOT schedule for the 21 X-type plaquette checks in
+  Dual~A has depth 16 (identical to the Z-circuit of Code~I).
+  Simulating the circuit-level threshold under the standard model is
+  the natural next verification step.
+\item[(O3) Circuit-level threshold for the two-stage protocol.]
+  The combined protocol doubles the syndrome circuit depth.
+  Characterising the circuit-level $P_{\log}$ and threshold for
+  the two-stage measurement sequence is an open problem.
+\item[(O4) Transversal gate set.]
+  Map the order-96 symmetry action to explicit logical gate
+  implementations for all four codes, exploiting the duality structure.
+\item[(O5) Asymmetric noise experiments on Dual~II.]
+  Benchmark Dual~II against Code~II on superconducting hardware
+  with realistic biased noise ($Z$-errors $10\times$ more likely than
+  $X$-errors), where Dual~II's $d_Z=4$ advantage should be maximal.
+\end{description}
+
+%------------------------------------------------------------------
+\section*{Acknowledgements}
+%------------------------------------------------------------------
+
+The author thanks three anonymous reviewers of~\cite{SchmittCD} whose
+detailed evaluations strengthened the geometric foundations of this work,
+and a subsequent reviewer who identified the CW-complex obstruction that
+led to the corrected flat-connection analysis.
+
+%------------------------------------------------------------------
+\begin{thebibliography}{99}
+
+\bibitem{Fowler2012}
+A.~G.~Fowler, M.~Martinis, A.~Whitfield and J.~M.~Martinis,
+Phys.\ Rev.\ A \textbf{86} (2012) 032324.
+
+\bibitem{Panteleev2022}
+P.~Panteleev and G.~Kalachev,
+IEEE Trans.\ Inf.\ Theory \textbf{68} (2022) 7820.
+
+\bibitem{Leverrier2022}
+A.~Leverrier and G.~Z\'emor,
+Proc.\ FOCS (2022) 872.
+
+\bibitem{Schmitt2026a}
+Schmitt, Y.\ (2026).
+\emph{Exact Discretisation and Boundary Observables in Lorentzian Causal
+Diamonds}. Zenodo. https://doi.org/10.5281/zenodo.19338306
+Preprint.
+
+\bibitem{Wu2022}
+Y.~Wu, S.~Kolkowitz, S.~Puri and J.~D.~Thompson,
+Nat.\ Commun.\ \textbf{13} (2022) 4657.
+
+\bibitem{Sahay2023}
+K.~Sahay and B.~Neyenhuis,
+PRX Quantum \textbf{4} (2023) 020342.
+
+\bibitem{Evered2023}
+S.~J.~Evered et al.,
+Nature \textbf{622} (2023) 268.
+
+\bibitem{Ryan-Anderson2021}
+C.~Ryan-Anderson et al.,
+PRX Quantum \textbf{2} (2021) 030307.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,15 @@
+A Lorentzian CSS Duality in Causal Diamond Quantum Error-Correcting Codes - Verification Script
+
+This software implements and verifies the novel geometric and algebraic 
+concepts presented in the paper:
+> Yannick Schmitt. (2026). A Lorentzian CSS Duality in Causal Diamond Quantum Error-Correcting Codes. Zenodo. https://doi.org/10.5281/zenodo.19343889
+
+The four codes derived from this geometry are:
+Code	Parameters	Highlights
+Code I	[[12, 4, (4,2)]]	Rate 1/3; corrects X-errors, detects Z-errors
+Code II	[[12, 1, (4,3)]]	Balanced; circuit-level threshold p_c ≈ 3.5%
+Dual A	[[12, 2, (2,6)]]	New; corrects all weight-1 and weight-2 Z-errors
+Dual II	[[12, 1, (3,4)]]	New; dZ = 4, preferred for dephasing-dominated hardware
+
+If you use this code or the implemented algorithms in your research, 
+please cite the paper mentioned above.
