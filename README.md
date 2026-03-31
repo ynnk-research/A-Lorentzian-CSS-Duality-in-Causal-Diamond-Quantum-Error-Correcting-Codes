@@ -66,12 +66,6 @@ python verification_CSS_Duality_CD_QEC.py
 
 The script has a fast mode for a quick smoke-test (~2 minutes) and a full mode for complete paper-value verification. The most computationally expensive sections are the Monte Carlo noise simulations (Sec 9) and circuit-level threshold simulations (Sec 12). To enable fast mode, set `FAST = True` near the top of the script; this reduces trial counts from 20,000 to 2,000 for code-capacity simulations and from 10,000 to 500 for circuit-level simulations.
 
-Expected output ends with:
-
-```
-  FINAL TALLY:  N PASS  /  0 FAIL  /  N total checks
-```
-
 
 ## Key Code Parameters
 
